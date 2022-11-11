@@ -1,6 +1,6 @@
 <?php
 
-namespace Tgu\Pakhomova\Exceptions;
+namespace Tgu\Pakhomova\Blog\Exceptions;
 
 class UserNotFoundException extends \Exception
 {

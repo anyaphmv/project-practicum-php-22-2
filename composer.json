@@ -11,5 +11,8 @@
             "email": "stud0000231077@study.utmn.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "symfony/polyfill-uuid":"^1.26",
+        "ext-pdo": "*"
+    }
 }

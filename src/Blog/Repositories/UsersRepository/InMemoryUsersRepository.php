@@ -1,22 +1,34 @@
 <?php
 
-namespace Blog\Repositories\UsersRepository;
+namespace Tgu\Pakhomova\Blog\Repositories\UsersRepository;
 
-use Blog\User;
-use Tgu\Pakhomova\Exceptions\UserNotFoundException;
+use Tgu\Pakhomova\Blog\Exceptions\UserNotFoundException;
+use Tgu\Pakhomova\Blog\User;
+use Tgu\Pakhomova\Blog\UUID;
 
-class InMemoryUsersRepository
+class InMemoryUsersRepository implements UsersRepositoryInterface
 {
-    private array $users =[];
+    private array $users = [];
+
     public function save(User $user):void{
         $this->users[] = $user;
     }
-    public function get(int $id):User {
+
+    public function getByUsername(string $username): User
+    {
         foreach ($this->users as $user){
-            if($user->getId()==$id){
+            if((string)$user->getUsername() === $username)
                 return $user;
-            }
         }
-        throw new UserNotFoundException("User not found: $id");
+        throw new UserNotFoundException("Users not found $username");
+    }
+
+    public function getByUuid(UUID $uuid): User
+    {
+        foreach ($this->users as $user){
+            if((string)$user->getUuid() === $uuid)
+                return $user;
+        }
+        throw new UserNotFoundException("Users not found $uuid");
     }
 }

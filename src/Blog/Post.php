@@ -5,8 +5,8 @@ namespace Tgu\Pakhomova\Blog;
 class Post
 {
     public function __construct(
-        public int $id,
-        private int $id_author,
+        private UUID $id,
+        private string $id_author,
         private string $header,
         private string $text,
     )
@@ -15,7 +15,20 @@ class Post
 
     public function __toString(): string
     {
-        return $this->id . ' - номер статьи, ' .$this->id_author . ' - автор, ' .$this->header . ' - заголовок, а далее текст: ' . $this->text;
+        $id=$this->getUuidPost();
+        return "Post $id author $this->id_author with title $this->header and text - $this->text".PHP_EOL;
+    }
+    public function getUuidPost():UUID{
+        return $this->id;
+    }
+    public function getUuidUser():string{
+        return $this->id_author;
+    }
+    public function getTitle():string{
+        return $this->header;
+    }
+    public function getTextPost():string{
+        return $this->text;
     }
 
 

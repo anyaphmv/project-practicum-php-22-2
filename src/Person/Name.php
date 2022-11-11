@@ -5,7 +5,6 @@ namespace Tgu\Pakhomova\Person;
 class Name
 {
     public function __construct(
-        public int $id,
         private string $firstname,
         private string $lastname,
     )
@@ -14,7 +13,13 @@ class Name
 
     public function __toString(): string
     {
-        return $this->id . ' - код пользователя, ' . $this->firstname . ' - имя, ' . $this->lastname . ' - фамилия!';
+        return $this->firstname . ' - имя, ' . $this->lastname . ' - фамилия!';
+    }
+    public function getFirstName():string{
+        return $this->firstname;
+    }
+    public function getLastName():string{
+        return $this->lastname;
     }
 
 }
