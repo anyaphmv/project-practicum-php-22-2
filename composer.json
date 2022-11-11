@@ -1,0 +1,18 @@
+{
+    "name": "tgu/pakhomova",
+    "autoload": {
+        "psr-4": {
+            "Tgu\\Pakhomova\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Администратор",
+            "email": "stud0000231077@study.utmn.ru"
+        }
+    ],
+    "require": {
+        "symfony/polyfill-uuid":"^1.26",
+        "ext-pdo": "*"
+    }
+}
