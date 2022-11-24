@@ -9,7 +9,7 @@ use Tgu\Pakhomova\Blog\Exceptions\CommentNotFoundException;
 use Tgu\Pakhomova\Blog\Repositories\CommentsRepository\CommentsRepositoryInterface;
 use Tgu\Pakhomova\Blog\UUID;
 
-class SqliteCommentsRepository implements  CommentsRepositoryInterface
+class SqliteCommentsRepository implements CommentsRepositoryInterface
 {
     public function __construct(private PDO $connection)
     {
@@ -26,6 +26,9 @@ class SqliteCommentsRepository implements  CommentsRepositoryInterface
             ':textCom'=>$comment->getTextComment()]);
     }
 
+    /**
+     * @throws CommentNotFoundException
+     */
     private function getComment(PDOStatement $statement, string $value):Comments{
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         if($result===false){
@@ -41,5 +44,15 @@ class SqliteCommentsRepository implements  CommentsRepositoryInterface
         );
         $statement->execute([':uuid_comment'=>(string)$uuid_comment]);
         return $this->getComment($statement, (string)$uuid_comment);
+    }
+
+    /**
+     * @throws CommentNotFoundException
+     */
+    public function getTextComment(string $textCom):Comments
+    {
+        $statement = $this->connection->prepare("SELECT * FROM comments WHERE textCom = :textCom");
+        $statement->execute([':textCom'=>(string)$textCom]);
+        return $this->getComment($statement, $textCom);
     }
 }

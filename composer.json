@@ -5,6 +5,11 @@
             "Tgu\\Pakhomova\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tgu\\Pakhomova\\PhpUnit": "Tests/"
+        }
+    },
     "authors": [
         {
             "name": "Администратор",
@@ -14,5 +19,11 @@
     "require": {
         "symfony/polyfill-uuid":"^1.26",
         "ext-pdo": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "scripts": {
+        "test": "phpunit tests —testdox —colors"
     }
 }

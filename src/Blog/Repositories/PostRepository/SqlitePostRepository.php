@@ -41,4 +41,10 @@ class SqlitePostRepository implements PostsRepositoryInterface
         $statement->execute([':uuid_post'=>(string)$uuidPost]);
         return $this->getPost($statement, (string)$uuidPost);
     }
+    public function getTextPost(string $text):Post
+    {
+        $statement = $this->connection->prepare("SELECT * FROM post WHERE text = :text");
+        $statement->execute([':text'=>(string)$text]);
+        return $this->getPost($statement, $text);
+    }
 }
