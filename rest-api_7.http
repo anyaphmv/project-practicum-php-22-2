@@ -1,0 +1,13 @@
+GET http://127.0.0.1:8000/users/show?username=user1
+Some-Header: some value
+Content-Type: application/json
+###
+POST http://127.0.0.1:8000/posts/comment
+Accept: application/json
+Content-Type: application/json
+
+{
+"uuid_author":"a5c1e4c1-d228-4649-b83b-df4cc6dd46a5",
+"uuid_post": "937b59c7-e000-4eb6-acc7-850417c66010",
+"textCom":"Hello, my name is Vasya"
+}
