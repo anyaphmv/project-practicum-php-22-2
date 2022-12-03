@@ -14,11 +14,11 @@ use Tgu\Pakhomova\Blog\UUID;
 
 class CreateComment implements ActionInterface
 {
-public function __construct(
-    private CommentsRepositoryInterface $commentsRepository
-)
-{
-}
+    public function __construct(
+        private CommentsRepositoryInterface $commentsRepository
+    )
+    {
+    }
 
     public function handle(Request $request): Response
     {

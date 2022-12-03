@@ -6,7 +6,6 @@ use PDO;
 use PDOStatement;
 use Tgu\Pakhomova\Blog\Comments;
 use Tgu\Pakhomova\Blog\Exceptions\CommentNotFoundException;
-use Tgu\Pakhomova\Blog\Repositories\CommentsRepository\CommentsRepositoryInterface;
 use Tgu\Pakhomova\Blog\UUID;
 
 class SqliteCommentsRepository implements CommentsRepositoryInterface

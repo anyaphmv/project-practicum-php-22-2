@@ -11,3 +11,6 @@ Content-Type: application/json
 "uuid_post": "937b59c7-e000-4eb6-acc7-850417c66010",
 "textCom":"Hello, my name is Vasya"
 }
+###
+GET http://127.0.0.1:8000/users/show?username=nilolai1234
+Accept: application/json

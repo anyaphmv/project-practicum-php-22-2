@@ -23,3 +23,14 @@ use Tgu\Pakhomova\Person\Name;
 //$comment = new Comments(1, $user->id, $post->id, 'Hello!');
 //
 //print $comment;
+
+function someFunction(bool $one, int $two=42,):string
+{
+    return $one . $two;
+}
+
+$reflection = new ReflectionFunction('someFunction');
+echo $reflection->getReturnType()->getName()."\n";
+foreach ($reflection->getParameters() as $parameter){
+    echo $parameter->getName().'['.$parameter->getType()->getName()."]\n";
+}
