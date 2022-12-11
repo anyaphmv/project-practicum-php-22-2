@@ -1,0 +1,31 @@
+{
+    "name": "tgu/pakhomova",
+    "autoload": {
+        "psr-4": {
+            "Tgu\\Pakhomova\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TGU\\Pakhomova\\PhpUnit\\": "Tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Администратор",
+            "email": "stud0000231077@study.utmn.ru"
+        }
+    ],
+    "require": {
+        "symfony/polyfill-uuid":"^1.26",
+        "ext-pdo": "*",
+        "monolog/monolog": "^3.2",
+        "symfony/dotenv": "^6.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "scripts": {
+        "test": "phpunit tests —testdox —colors"
+    }
+}
