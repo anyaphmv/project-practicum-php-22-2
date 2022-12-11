@@ -1,5 +1,6 @@
 <?php
 
+use Psr\Log\LoggerInterface;
 use Tgu\Pakhomova\Blog\Commands\Arguments;
 use Tgu\Pakhomova\Blog\Commands\CreateUserCommand;
 use Tgu\Pakhomova\Blog\Comments;
@@ -16,8 +17,9 @@ use Tgu\Pakhomova\Blog\Exceptions\Argumentsexception;
 
 $conteiner = require __DIR__ .'/bootstrap.php';
 $command = $conteiner->get(CreateUserCommand::class);
+$logger= $conteiner-> get(LoggerInterface::class);
 try{$command->handle(Arguments::fromArgv($argv));}
-catch (Argumentsexception|CommandException $exception){echo $exception->getMessage();}
+catch (Argumentsexception|CommandException $exception){$logger->error($exception->getMessage(),['exceptoin'=>$exception]);}
 //require_once __DIR__ .'/vendor/autoload.php';
 //
 //$connection = new PDO ('sqlite:'.__DIR__.'/blog.sqlite');

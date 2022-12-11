@@ -10,18 +10,20 @@ use Tgu\Pakhomova\Blog\UUID;
 
 class SqliteLikesRepository implements LikesRepositoryInterface
 {
-    public function __construct(private PDO $connection)
+    public function __construct(private PDO $connection, private LoggerInterface $logger)
     {
 
     }
 
     public function saveLike(Likes $likes):void{
+        $this->logger->info('Save like');
         $statement = $this->connection->prepare(
             "INSERT INTO likes (uuid_like, uuid_post, uuid_user) VALUES (:uuid_like,:uuid_post,:uuid_user)");
         $statement->execute([
             ':uuid_comment'=>(string)$likes->getUuidLike(),
             ':uuid_post'=>$likes->getUuidPost(),
             ':uuid_author'=>$likes->getUuidUser()]);
+        $this->logger->info("'Save like: $likes" );
     }
 
     /**
@@ -30,6 +32,7 @@ class SqliteLikesRepository implements LikesRepositoryInterface
     private function getLike(PDOStatement $statement, string $value):Likes{
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         if($result===false){
+            $this->logger->warning("Cannot get like: $value");
             throw new LikeNotFoundException("Cannot get like: $value");
         }
         return new Likes(new UUID($result['uuid_like']), $result['uuid_post'], $result['uuid_user']);

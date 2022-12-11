@@ -15,8 +15,7 @@ class Comments
 
     public function __toString(): string
     {
-        $idCom=$this->getUuidComment();
-        return "Comment $idCom with post $this->id_post where author $this->id_author  and text - $this->textCom".PHP_EOL;
+        return $this->idCom . ' ' .$this->id_author . ' ' .$this->id_post . ' ' . $this->textCom;
     }
     public function getUuidComment():UUID{
         return $this->idCom;

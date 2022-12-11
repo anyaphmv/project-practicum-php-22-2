@@ -4,18 +4,20 @@ namespace Tgu\Pakhomova\Blog\Repositories\PostRepository;
 
 use PDO;
 use PDOStatement;
+use Psr\Log\LoggerInterface;
 use Tgu\Pakhomova\Blog\Exceptions\PostNotFoundException;
 use Tgu\Pakhomova\Blog\Post;
 use Tgu\Pakhomova\Blog\UUID;
 
 class SqlitePostRepository implements PostsRepositoryInterface
 {
-    public function __construct(private PDO $connection)
+    public function __construct(private PDO $connection, private LoggerInterface $logger,)
     {
 
     }
 
     public function savePost(Post $post):void{
+        $this->logger->info('Save post ');
         $statement = $this->connection->prepare(
             "INSERT INTO post (uuid_post, uuid_author, title, text) VALUES (:uuid_post,    :uuid_author,:title, :text)");
         $statement->execute([
@@ -23,11 +25,13 @@ class SqlitePostRepository implements PostsRepositoryInterface
             ':uuid_author'=>$post->getUuidUser(),
             ':title'=>$post->getTitle(),
             ':text'=>$post->getTextPost()]);
+        $this->logger->info("'Save post: $post" );
     }
 
     private function getPost(PDOStatement $statement, string $value):Post{
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         if($result===false){
+            $this->logger->warning("Cannot get post: $value");
             throw new PostNotFoundException("Cannot get post: $value");
         }
         return new Post(new UUID($result['uuid_post']), $result['uuid_author'], $result['title'], $result['text']);

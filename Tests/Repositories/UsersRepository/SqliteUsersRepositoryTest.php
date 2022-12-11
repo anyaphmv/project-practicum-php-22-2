@@ -10,6 +10,7 @@ use Tgu\Pakhomova\Blog\Repositories\UsersRepository\SqliteUsersRepository;
 use Tgu\Pakhomova\Blog\User;
 use Tgu\Pakhomova\Blog\UUID;
 use Tgu\Pakhomova\Person\Name;
+use TGU\Pakhomova\PhpUnit\Blog\DummyLogger;
 
 class SqliteUsersRepositoryTest extends TestCase
 {
@@ -21,7 +22,7 @@ class SqliteUsersRepositoryTest extends TestCase
         $statementStub->method('fetch')->willReturn(false);
         $connectionStub->method('prepare')->willReturn($statementStub);
 
-        $repository = new SqliteUsersRepository($connectionStub);
+        $repository = new SqliteUsersRepository($connectionStub, new DummyLogger());
 
         $this->expectException(UserNotFoundException::class);
         $this->expectExceptionMessage('Cannot get user: user1');
@@ -45,7 +46,7 @@ class SqliteUsersRepositoryTest extends TestCase
             ]);
         $connectionStub->method('prepare')->willReturn($statementStub);
 
-        $repository = new SqliteUsersRepository($connectionStub);
+        $repository = new SqliteUsersRepository($connectionStub, new DummyLogger());
 
         $repository->save(new User(
             new UUID('7fba16a0-ca95-440d-b09a-94648029f2cc'),
@@ -64,7 +65,7 @@ class SqliteUsersRepositoryTest extends TestCase
         $statementStub->method('fetch')->willReturn(false);
         $connectionStub->method('prepare')->willReturn($statementStub);
 
-        $repository = new SqliteUsersRepository($connectionStub);
+        $repository = new SqliteUsersRepository($connectionStub, new DummyLogger());
         $this->expectException(UserNotFoundException::class);
         $this->expectExceptionMessage(' UUID: 7fba16a0-ca95-440d-b09a-94648029f2cc');
 

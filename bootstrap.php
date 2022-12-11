@@ -1,5 +1,8 @@
 <?php
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Tgu\Pakhomova\Blog\Container\DIContainer;
 use Tgu\Pakhomova\Blog\Repositories\UsersRepository\SqliteUsersRepository;
 use Tgu\Pakhomova\Blog\Repositories\UsersRepository\UsersRepositoryInterface;
@@ -13,5 +16,16 @@ $conteiner->bind(
 $conteiner->bind(
     UsersRepositoryInterface::class,
     SqliteUsersRepository::class
+);
+$conteiner->bind(
+    LoggerInterface::class,
+    (new Logger('blog'))->pushHandler(new StreamHandler(
+        __DIR__.'/logs/blog.log',
+    )) ->pushHandler(new StreamHandler(
+        __DIR__.'/logs/blog.error.log',
+        level: Logger::ERROR,
+        bubble: false
+    ))->pushHandler(new StreamHandler( "php://stdout"),
+    ),
 );
 return $conteiner;

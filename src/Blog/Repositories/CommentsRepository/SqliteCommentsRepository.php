@@ -10,12 +10,13 @@ use Tgu\Pakhomova\Blog\UUID;
 
 class SqliteCommentsRepository implements CommentsRepositoryInterface
 {
-    public function __construct(private PDO $connection)
+    public function __construct(private PDO $connection, private LoggerInterface $logger,)
     {
 
     }
 
     public function saveComment(Comments $comment):void{
+        $this->logger->info('Save comment ');
         $statement = $this->connection->prepare(
             "INSERT INTO comments (uuid_comment, uuid_post, uuid_author, textCom) VALUES (:uuid_comment,:uuid_post,:uuid_author, :textCom)");
         $statement->execute([
@@ -23,6 +24,7 @@ class SqliteCommentsRepository implements CommentsRepositoryInterface
             ':uuid_post'=>$comment->getUuidPost(),
             ':uuid_author'=>$comment->getUuidUser(),
             ':textCom'=>$comment->getTextComment()]);
+        $this->logger->info("'Save comment: $comment" );
     }
 
     /**
@@ -31,6 +33,7 @@ class SqliteCommentsRepository implements CommentsRepositoryInterface
     private function getComment(PDOStatement $statement, string $value):Comments{
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         if($result===false){
+            $this->logger->warning("Cannot get comment: $value");
             throw new CommentNotFoundException("Cannot get comment: $value");
         }
         return new Comments(new UUID($result['uuid_comment']), $result['uuid_post'], $result['uuid_author'], $result['textCom']);
