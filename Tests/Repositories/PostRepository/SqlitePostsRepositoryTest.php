@@ -39,15 +39,16 @@ class SqlitePostsRepositoryTest extends TestCase
             ->method('execute')
             ->with([
                 ':uuid_post' =>'937b59c7-e000-4eb6-acc7-850417c66010',
-                ':uuid_author'=>'7fba16a0-ca95-440d-b09a-94648029f2cc',
+                ':uuid_author'=>'a5c1e4c1-d228-4649-b83b-df4cc6dd46a5',
                 ':title'=>'Title1',
                 ':text'=>'Text1']);
         $connectionStub->method('prepare')->willReturn($statementStub);
 
-        $repository = new SqlitePostRepository($connectionStub, new DummyLogger());
+        $repository = new SqlitePostRepository($connectionStub,
+            new DummyLogger());
 
         $repository->savePost(new Post(
-            new UUID('937b59c7-e000-4eb6-acc7-850417c66010'), '7fba16a0-ca95-440d-b09a-94648029f2cc','Title1','Text1'
+            new UUID('937b59c7-e000-4eb6-acc7-850417c66010'), 'a5c1e4c1-d228-4649-b83b-df4cc6dd46a5','Title1','Text1'
         ));
     }
 

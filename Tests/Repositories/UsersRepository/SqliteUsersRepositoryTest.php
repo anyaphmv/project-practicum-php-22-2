@@ -22,7 +22,7 @@ class SqliteUsersRepositoryTest extends TestCase
         $statementStub->method('fetch')->willReturn(false);
         $connectionStub->method('prepare')->willReturn($statementStub);
 
-        $repository = new SqliteUsersRepository($connectionStub, new DummyLogger());
+        $repository = new SqliteUsersRepository($connectionStub,  new DummyLogger());
 
         $this->expectException(UserNotFoundException::class);
         $this->expectExceptionMessage('Cannot get user: user1');
@@ -39,18 +39,19 @@ class SqliteUsersRepositoryTest extends TestCase
             ->expects($this->once())
             ->method('execute')
             ->with([
-                ':first_name'=>'Ivan',
-                ':last_name'=>'Nikitin',
-                ':uuid' =>'7fba16a0-ca95-440d-b09a-94648029f2cc',
-                ':username'=>'user1'
+                ':first_name'=>'Petr',
+                ':last_name'=>'Petrov',
+                ':uuid' =>'0f07b4fe-cff9-4551-ba0c-d16bcbbbbe5e',
+                ':username'=>'user2',
+                ':password'=>'1234'
             ]);
         $connectionStub->method('prepare')->willReturn($statementStub);
 
         $repository = new SqliteUsersRepository($connectionStub, new DummyLogger());
 
         $repository->save(new User(
-            new UUID('7fba16a0-ca95-440d-b09a-94648029f2cc'),
-            new Name('Ivan', 'Nikitin'), 'user1'
+            new UUID('0f07b4fe-cff9-4551-ba0c-d16bcbbbbe5e'),
+            new Name('Petr', 'Petrov'), 'user2', '1234'
         ));
     }
 
@@ -65,10 +66,10 @@ class SqliteUsersRepositoryTest extends TestCase
         $statementStub->method('fetch')->willReturn(false);
         $connectionStub->method('prepare')->willReturn($statementStub);
 
-        $repository = new SqliteUsersRepository($connectionStub, new DummyLogger());
+        $repository = new SqliteUsersRepository($connectionStub);
         $this->expectException(UserNotFoundException::class);
-        $this->expectExceptionMessage(' UUID: 7fba16a0-ca95-440d-b09a-94648029f2cc');
+        $this->expectExceptionMessage(' UUID: 0f07b4fe-cff9-4551-ba0c-d16bcbbbbe5e');
 
-        $repository->getByUuid('7fba16a0-ca95-440d-b09a-94648029f2cc');
+        $repository->getByUuid('0f07b4fe-cff9-4551-ba0c-d16bcbbbbe5e');
     }
 }

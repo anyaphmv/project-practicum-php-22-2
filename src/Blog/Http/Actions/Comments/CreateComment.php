@@ -4,6 +4,8 @@ namespace Tgu\Pakhomova\Blog\Http\Actions\Comments;
 
 use Tgu\Pakhomova\Blog\Comments;
 use Tgu\Pakhomova\Blog\Exceptions\HttpException;
+use Tgu\Pakhomova\Blog\Exceptions\PostNotFoundException;
+use Tgu\Pakhomova\Blog\Exceptions\UserNotFoundException;
 use Tgu\Pakhomova\Blog\Http\Actions\ActionInterface;
 use Tgu\Pakhomova\Blog\Http\ErrorResponse;
 use Tgu\Pakhomova\Blog\Http\Request;
@@ -15,7 +17,8 @@ use Tgu\Pakhomova\Blog\UUID;
 class CreateComment implements ActionInterface
 {
     public function __construct(
-        private CommentsRepositoryInterface $commentsRepository
+        private CommentsRepositoryInterface $commentsRepository,
+        private TokenAuthenticationInterface $authentication,
     )
     {
     }
@@ -23,13 +26,28 @@ class CreateComment implements ActionInterface
     public function handle(Request $request): Response
     {
         try {
-            $newCommentUuid = UUID::random();
-            $comment = new Comments($newCommentUuid, $request->jsonBodyFind('uuid_post'), $request->jsonBodyFind('uuid_author'), $request->jsonBodyFind('textCom'));
+            $uuid_author = $this->authentication->user($request);
+        } catch (UserNotFoundException $exception){
+            return new ErrorResponse($exception->getMessage());
         }
-        catch (HttpException $exception){
+
+        try {
+            $uuid_post = $this->authentication->post($request);
+        } catch (PostNotFoundException $exception){
+            return new ErrorResponse($exception->getMessage());
+        }
+
+        $newCommentUuid = UUID::random();
+        try {
+            $comment = new Comments($newCommentUuid,
+                $uuid_post,
+                $uuid_author,
+                $request->jsonBodyField('textCom')
+            );
+        } catch (HttpException $exception){
             return new ErrorResponse($exception->getMessage());
         }
         $this->commentsRepository->saveComment($comment);
-        return new SuccessResponse(['uuid'=>(string)$newCommentUuid]);
+        return new SuccessResponse(['uuid_comment'=>(string)$newCommentUuid]);
     }
 }

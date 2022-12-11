@@ -4,6 +4,7 @@ namespace Tgu\Pakhomova\Blog\Repositories\CommentsRepository;
 
 use PDO;
 use PDOStatement;
+use Psr\Log\LoggerInterface;
 use Tgu\Pakhomova\Blog\Comments;
 use Tgu\Pakhomova\Blog\Exceptions\CommentNotFoundException;
 use Tgu\Pakhomova\Blog\UUID;

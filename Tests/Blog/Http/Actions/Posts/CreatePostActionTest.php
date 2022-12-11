@@ -16,11 +16,11 @@ class CreatePostActionTest extends TestCase
 {
     private function postRepository(array $posts):PostsRepositoryInterface{
         return new class($posts) implements PostsRepositoryInterface {
-          public function __construct(
-              public array $array
-          )
-          {
-          }
+            public function __construct(
+                public array $array
+            )
+            {
+            }
 
             public function savePost(Post $post): void
             {
@@ -30,6 +30,11 @@ class CreatePostActionTest extends TestCase
             public function getByUuidPost(UUID $uuid): Post
             {
                 throw new PostNotFoundException('Not found');
+            }
+
+            public function getTextPost(string $text): Post
+            {
+                // TODO: Implement getTextPost() method.
             }
         };
     }

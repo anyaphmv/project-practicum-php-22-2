@@ -3,6 +3,7 @@
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Dotenv\Dotenv;
 use Tgu\Pakhomova\Blog\Http\Actions\Comments\CreateComment;
+use Tgu\Pakhomova\Blog\Http\Actions\Likes\CreateLikes;
 use Tgu\Pakhomova\Blog\Http\Actions\Posts\CreatePost;
 use Tgu\Pakhomova\Blog\Http\Actions\Posts\DeletePost;
 use Tgu\Pakhomova\Blog\Http\Actions\Users\CreateUser;
@@ -42,6 +43,9 @@ $routes = [
     ],
     'POST' => [
         '/users/create' => CreateUser::class,
+        '/posts/create'=> CreatePost::class,
+        '/comment/create'=> CreateComment::class,
+        '/like/create'=> CreateLikes::class,
     ],
 ];
 //$routes =[
@@ -69,6 +73,7 @@ try {
     $response = $action->handle($request);
     $response->send();
 } catch (Exception $exception) {
+    $logger->warning($exception->getMessage());
     (new ErrorResponse($exception->getMessage()))->send();
     return;
 }

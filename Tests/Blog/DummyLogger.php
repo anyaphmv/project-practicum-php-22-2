@@ -2,7 +2,7 @@
 
 namespace TGU\Pakhomova\PhpUnit\Blog;
 
-class DummyLogger implements LoggerInterface
+class DummyLogger implements LoggerInterface, \Psr\Log\LoggerInterface
 {
     public function emergency(\Stringable|string $message, array $context = []): void
     {

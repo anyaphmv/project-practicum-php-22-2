@@ -12,9 +12,8 @@ use Tgu\Pakhomova\Person\Name;
 
 class CreateUserCommand
 {
-    public function __construct(
-        private UsersRepositoryInterface $usersRepository,
-        private LoggerInterface $logger,
+    public function __construct(private UsersRepositoryInterface $usersRepository,
+                                private LoggerInterface $logger,
     )
     {
     }
@@ -22,13 +21,26 @@ class CreateUserCommand
     public function handle(Arguments $arguments):void{
         $this->logger->info('Create command started');
         $username = $arguments->get('username');
+        // $password = $arguments->get('password');
+        //$hash = hash('sha256', $password);
         if($this->userExist($username)){
             //  throw new CommandException("User already exists: $username");
             $this->logger->warning("User already exists: $username");
         }
-        $uuid= UUID::random();
-        $this->usersRepository->save(new User($uuid, new Name($arguments->get('first_name'), $arguments->get('last_name')),$username));
-        $this->logger->info("User created: $uuid" );
+
+        $user = User::createFrom(
+            $username,
+            $arguments->get('password'),
+            new Name(
+                $arguments->get('first_name'),
+                $arguments->get('last_name')
+            )
+        );
+
+        // $uuid= UUID::random();
+        $this->usersRepository->save($user);
+
+        $this->logger->info("User created: " . $user->getUuid());
     }
     public function userExist(string $username):bool{
         try{

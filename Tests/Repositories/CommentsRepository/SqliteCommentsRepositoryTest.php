@@ -43,11 +43,13 @@ class SqliteCommentsRepositoryTest extends TestCase
                 ':uuid_author'=>'7fba16a0-ca95-440d-b09a-94648029f2cc',
                 ':textCom'=>'I am so tired'
             ]);
+
         $connectionStub->method('prepare')->willReturn($statementStub);
 
-        $repository = new SqliteCommentsRepository($connectionStub, new DummyLogger());
+        $repository = new SqliteCommentsRepository($connectionStub,
+            new DummyLogger());
 
-        $repository->saveComment(new Comments(
+        $repository->saveComment( new Comments(
             new UUID('5daad388-e5ed-4bc4-82a5-cea3e5544238'), '937b59c7-e000-4eb6-acc7-850417c66010','7fba16a0-ca95-440d-b09a-94648029f2cc','I am so tired'
         ));
     }
@@ -63,8 +65,8 @@ class SqliteCommentsRepositoryTest extends TestCase
         $repository = new SqliteCommentsRepository($connectionStub, new DummyLogger());
 
         $this->expectException(CommentNotFoundException::class);
-        $this->expectExceptionMessage('Cannot get comment:f165d492-bffe-448f-a499-b72d16a40f1b');
+        $this->expectExceptionMessage('Cannot get comment:5daad388-e5ed-4bc4-82a5-cea3e5544238');
 
-        $repository->getByUuidComment('f165d492-bffe-448f-a499-b72d16a40f1b');
+        $repository->getByUuidComment('5daad388-e5ed-4bc4-82a5-cea3e5544238');
     }
 }

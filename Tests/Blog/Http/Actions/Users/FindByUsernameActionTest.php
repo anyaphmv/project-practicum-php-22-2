@@ -18,11 +18,11 @@ class FindByUsernameActionTest extends TestCase
 {
     private function userRepository(array $users):UsersRepositoryInterface{
         return new class($users) implements UsersRepositoryInterface{
-          public function __construct(
-              private array $users
-          )
-          {
-          }
+            public function __construct(
+                private array $users
+            )
+            {
+            }
 
             public function save(User $user): void
             {
@@ -46,9 +46,8 @@ class FindByUsernameActionTest extends TestCase
         };
     }
 
+
     /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disable
      * @throws \JsonException
      */
     public function testItReturnErrorResponceIdNoUsernameProvided(): void
@@ -62,13 +61,12 @@ class FindByUsernameActionTest extends TestCase
         $responce->send();
     }
 
+
     /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disable
      * @throws \JsonException
      */
     public function testItReturnErrorResponceIdUserNotFound(): void{
-        $request = new Request(['username'=>'ivan'], [], '');
+        $request = new Request(['username'=>'Petya'], [], '');
         $userRepository = $this->userRepository([]);
         $action = new FindByUsername($userRepository);
         $responce = $action->handle($request);
@@ -76,18 +74,17 @@ class FindByUsernameActionTest extends TestCase
         $this->expectOutputString('{"success":false,"reason":"Not found"}');
         $responce->send();
     }
+
     /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disable
      * @throws \JsonException
      */
     public function testItReturnSuccessfulResponse(): void{
         $request = new Request(['username'=>'ivan'], [],'');
-        $userRepository = $this->userRepository([new User(UUID::random(),new Name('Ivan','Nilitin'),'ivan')]);
+        $userRepository = $this->userRepository([new User(UUID::random(),new Name('Petya','Petrow'),'admin')]);
         $action = new FindByUsername($userRepository);
         $responce = $action->handle($request);
         $this->assertInstanceOf(SuccessResponse::class, $responce);
-        $this->expectOutputString('{"success":true,"data":{"username":"ivan","name":"Ivan Nilitin"}}');
+        $this->expectOutputString('{"success":true,"data":{"username":"admin","name":"Petya Petrow"}}');
         $responce->send();
     }
 }

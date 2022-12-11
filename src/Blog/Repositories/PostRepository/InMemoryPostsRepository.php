@@ -22,4 +22,8 @@ class InMemoryPostsRepository implements PostsRepositoryInterface
         }
         throw new PostNotFoundException("Posts not found $uuidPost");
     }
+    public function getTextPost(string $text): Post
+    {
+        // TODO: Implement getTextPost() method.
+    }
 }

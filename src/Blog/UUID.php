@@ -2,7 +2,8 @@
 
 namespace Tgu\Pakhomova\Blog;
 
-use http\Exception\InvalidArgumentException;
+
+use Tgu\Pakhomova\Blog\Exceptions\InvalidArgumentException;
 
 class UUID
 {

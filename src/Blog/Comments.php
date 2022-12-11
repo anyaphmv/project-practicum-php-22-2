@@ -29,5 +29,4 @@ class Comments
     public function getTextComment():string{
         return $this->textCom;
     }
-
 }

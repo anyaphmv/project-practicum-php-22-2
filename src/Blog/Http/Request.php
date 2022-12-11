@@ -42,15 +42,15 @@ class Request
     /**
      * @throws HttpException
      */
-    public function jsonBodyFind(string $field):mixed{
-    $data = $this->jsonBody();
-    if(!array_key_exists($field, $data)){
-        throw new HttpException("No such field: $field");
-    }
-    if(empty($data[$field])){
-        throw new HttpException("Empty field: $field");
-    }
-    return $data[$field];
+    public function jsonBodyField(string $field):mixed{
+        $data = $this->jsonBody();
+        if(!array_key_exists($field, $data)){
+            throw new HttpException("No such field: $field");
+        }
+        if(empty($data[$field])){
+            throw new HttpException("Empty field: $field");
+        }
+        return $data[$field];
     }
 
     public function path(): string
@@ -85,4 +85,5 @@ class Request
         }
         return $value;
     }
+
 }
